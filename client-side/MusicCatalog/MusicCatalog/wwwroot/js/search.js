@@ -60,9 +60,19 @@ const renderAlbumsHtml = function(albums) {
   searchResults.innerHTML = html;
 }
 
-const search = function() {
+const search = function(updateUrl) {
   const searchQuery = searchQueryInput.value;
   const searchCategory = searchCategorySelect.value;
+
+  if (updateUrl) {
+    let url = '/';
+
+    if (searchQuery || searchCategory) {
+      url += encodeURI(`?SearchQuery=${searchQuery}&SearchCategory=${searchCategory}`);
+    }
+
+    history.pushState({ searchQuery, searchCategory }, null, url);
+  }
 
   getAlbums(searchQuery, searchCategory)
     .then(data => renderAlbumsHtml(data));
@@ -70,7 +80,7 @@ const search = function() {
 
 searchButton.addEventListener('click', event => {
   event.preventDefault();
-  search();
+  search(true);
 });
 
 clearButton.addEventListener('click', event => {
@@ -79,7 +89,21 @@ clearButton.addEventListener('click', event => {
   searchQueryInput.value = '';
   searchCategorySelect.selectedIndex = 0;
 
-  search();
+  search(true);
 });
 
-search();
+window.onpopstate = event => {
+  let searchQuery = '';
+  let searchCategory = '';
+
+  if (event.state !== null){
+    ({ searchQuery, searchCategory } = event.state);
+  }
+
+  searchQueryInput.value = searchQuery;
+  searchCategorySelect.value = searchCategory;
+
+  search(false);
+};
+
+search(false);
