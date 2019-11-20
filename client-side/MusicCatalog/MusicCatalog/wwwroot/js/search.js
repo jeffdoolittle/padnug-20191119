@@ -22,6 +22,14 @@ const getAlbums = function(searchQuery, searchCategory) {
 
 const renderAlbumsHtml = function(albums) {
 
+  if (albums.length == 0) {
+    searchResults.innerHTML = `
+    <div>
+      Sorry... no results were found that matched your search criteria.
+    </div>`;
+    return;
+  }
+
   const albumsHtml = albums.map(album => `
   <div class="column is-half">
     <div class="box">
