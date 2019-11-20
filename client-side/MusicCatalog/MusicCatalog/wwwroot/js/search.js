@@ -65,4 +65,13 @@ searchButton.addEventListener('click', event => {
   search();
 });
 
+clearButton.addEventListener('click', event => {
+  event.preventDefault();
+
+  searchQueryInput.value = '';
+  searchCategorySelect.selectedIndex = 0;
+
+  search();
+});
+
 search();
