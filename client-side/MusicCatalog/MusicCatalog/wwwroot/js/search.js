@@ -9,12 +9,12 @@ const clearButton = element('Clear');
 const searchQueryInput = element('SearchQuery');
 const searchCategorySelect = element('SearchCategory');
 
-let getAlbums = function() {
+const getAlbums = function() {
   return fetch('api/Albums')
     .then(response => response.json());
 }
 
-let renderAlbumsHtml = function(albums) {
+const renderAlbumsHtml = function(albums) {
 
   const albumsHtml = albums.map(album => `
   <div class="column is-half">
@@ -46,5 +46,17 @@ let renderAlbumsHtml = function(albums) {
   searchResults.innerHTML = html;
 }
 
-getAlbums()
-  .then(data => renderAlbumsHtml(data));
+const search = function() {
+  const searchQuery = searchQueryInput.value;
+  const searchCategory = searchCategorySelect.value;
+
+  getAlbums(searchQuery, searchCategory)
+    .then(data => renderAlbumsHtml(data));
+};
+
+searchButton.addEventListener('click', event => {
+  event.preventDefault();
+  search();
+});
+
+search();
