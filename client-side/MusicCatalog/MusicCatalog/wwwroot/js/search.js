@@ -9,8 +9,14 @@ const clearButton = element('Clear');
 const searchQueryInput = element('SearchQuery');
 const searchCategorySelect = element('SearchCategory');
 
-const getAlbums = function() {
-  return fetch('api/Albums')
+const getAlbums = function(searchQuery, searchCategory) {
+  let url = 'api/Albums';
+
+  if (searchQuery || searchCategory) {
+    url += encodeURI(`?SearchQuery=${searchQuery}&SearchCategory=${searchCategory}`);
+  }
+
+  return fetch(url)
     .then(response => response.json());
 }
 
