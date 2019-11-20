@@ -23,5 +23,12 @@ fetch('api/Albums')
       </div>
     `);
 
-    const html = albumsHtml.join(' ');
+    const html = `
+    <div class="columns is-multiline">
+      ${albumsHtml.join(' ')}
+    </div>
+    `;
+    
+    const searchResults = document.getElementById('SearchResults');
+    searchResults.innerHTML = html;
   });
